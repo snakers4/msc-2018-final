@@ -1,3 +1,5 @@
+![pipeline](pipeline.jpg)
+
 # 1. Build docker image
 
 To build the docker image from the Dockerfile located in `dockerfile` please do:
