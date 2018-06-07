@@ -5,7 +5,7 @@
 To build the docker image from the Dockerfile located in `dockerfile` please do:
 ```
 cd dockerfile
-docker build -t atmyra_docker .
+docker build -t face_attack_docker .
 ```
 
 Also please make sure that [nvidia-docker2](https://github.com/nvidia/nvidia-docker/wiki/Installation-(version-2.0)) and proper nvidia drivers are installed.
@@ -17,7 +17,7 @@ docker run --runtime=nvidia --rm nvidia/cuda nvidia-smi
 
 Then launch the container as follows:
 ```
-docker run --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all -it -v /your/folder/:/home/keras/notebook/your_folder -p 8888:8888 -p 6006:6006 --name atmyra --shm-size 16G atmyra_docker
+docker run --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all -it -v /your/folder/:/home/keras/notebook/your_folder -p 8888:8888 -p 6006:6006 --name face_attack --shm-size 16G face_attack_docker
 ```
 
 Please note that w/o `--shm-size 16G` PyTorch dataloader classes will not work.
@@ -76,7 +76,11 @@ To download the **pre-trained weights** you can use the following links:
 
 # 3. Run attack inference
 
-**After all of the above preparations, run the following scripts:**
+
+**Run attack scripts using the above pre-trained weights, or to proceed to training sections**
+
+
+First attack using Fast Gradient Value Method
 
 ```
 python attacker.py --root ./data/imgs/ --save_root ./dual_net_new/ --datalist ./data/pairs_list.csv --start_from 0 --attack_type IFGM \
@@ -89,27 +93,27 @@ student_net_learning/checkpoint/resnet18_scale_fold0_best.pth.tar \
 student_net_learning/checkpoint/densenet161_1e4_scale_fold0_best.pth.tar --cuda
 ```
 Please note that full inference may take 30+ hours, therefore the easiest way to speed up the script is to run it in several threads using `--start_from 0` parameter
-Then
+Then run one instance on one-pixel attack
 ```
 python attacker.py --root ./dual_net_new --save_root ./dual_net_new_op/ \
 --datalist ./data/pairs_list.csv --cuda --start_from 0 --attack_mode continue --attack_type OnePixel
 ```
-Then
+Then run one more instance of one pixel attack
 ```
 python attacker.py --root ./dual_net_new_op --save_root ./dual_net_new_op_5/ \
 --datalist ./data/pairs_list.csv --cuda --start_from 0 --attack_mode continue --attack_type OnePixel --iter 5
 ```
-Then
+Then run one more instance of one pixel attack
 ```
 python attacker.py --root ./dual_net_new_op_5 --save_root ./dual_net_new_op_15/ \
 --datalist ./data/pairs_list.csv --cuda --start_from 0 --attack_mode continue --attack_type OnePixel --iter 10
 ```
-Then
+Then run one more instance of one pixel attack
 ```
 python attacker.py --root ./dual_net_new_op_15 --save_root ./FINAL_FINAL/ \
 --datalist ./data/pairs_list.csv --cuda --start_from 0 --attack_mode continue --attack_type OnePixel-last-hope --iter 5
 ```
-Then
+Then run evaluation script
 ```
 python evaluate.py --attack_root ./FINAL_FINAL/ --target_dscr ./data/val_descriptors.npy --submit_name final_final --gpu_id 0
 ```
@@ -206,7 +210,8 @@ With the above setting on 2x1080Ti training takes:
 
 # 5. Train mortido's CNNs
 
-Provided original script log w/o alterations
+Provided original scripts log w/o alterations
+The require code from the [original repository](https://github.com/AlexanderParkin/MCS2018.Baseline)
 ```
 
 ======================================
