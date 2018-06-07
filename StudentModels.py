@@ -60,7 +60,7 @@ class FineTuneModel(nn.Module):
             
     def forward(self, x):
         f = self.features(x)
-        elif self.modelName == 'resnet' :
+        if self.modelName == 'resnet' :
             f = f.view(f.size(0), -1)
         elif self.modelName == 'densenet' :   
             f = f.view(f.size(0), -1)
