@@ -50,6 +50,7 @@ This is the version for
 Backup [link](https://drive.google.com/open?id=1qXOfI-uZi2uw8ZlVZnQV_DzzVE-KmNbN) for the source file
 
 It is assumed that data is stored in `/data`
+If the data is no more available on the [competition page](https://competitions.codalab.org/competitions/19090#participate), please use this [backup](https://drive.google.com/open?id=1IpA-otqgqSw-MnYmL1UGFbjFV7S4a2Lk).
 
 The following files are required 
 - `data/pairs_list.csv`
