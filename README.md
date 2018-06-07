@@ -77,7 +77,7 @@ To download the **pre-trained weights** you can use the following links:
 # 3. Run attack inference
 
 
-**Run attack scripts using the above pre-trained weights, or to proceed to training sections**
+**Run attack scripts using the above pre-trained weights, or proceed to training sections**
 
 
 First attack using Fast Gradient Value Method
