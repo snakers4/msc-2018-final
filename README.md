@@ -40,8 +40,14 @@ To find out the container ID run
 
 # 2. Data structure and preparation
 
-Clone this repo into some folder
-Then clone the original [repo](https://github.com/AlexanderParkin/MCS2018.Baseline/blob/master/Welcome_notebook.ipynb) into `MCS2018`
+Download this [version](mcs2018-competition.visionlabs.ru/distribs/test/MCS2018.cpython-35m-x86_64-linux-gnu.so) of the black box into the folder
+
+This is the version for
+- Ubuntu 16.04
+- Python 3.5
+- CUDA 9.0
+
+Backup link 
 
 It is assumed that data is stored in `/data`
 
@@ -77,11 +83,12 @@ python attacker.py --root ./data/imgs/ --save_root ./dual_net_new/ --datalist ./
 --model_name resnet34 ResNet50 Xception resnet18 densenet161 \
 --checkpoint \
 student_net_learning/checkpoint/resnet34_scale_fold0_best.pth.tar \
-student_net_learning/checkpoint/ResNet50/best_model_chkpt.t7 \
-student_net_learning/checkpoint/Xception/best_model_chkpt.t7 \
+student_net_learning/checkpoint/ResNet50/best_model_chkpt-resnet50.t7 \
+student_net_learning/checkpoint/Xception/best_model_chkpt-xception.t7 \
 student_net_learning/checkpoint/resnet18_scale_fold0_best.pth.tar \
 student_net_learning/checkpoint/densenet161_1e4_scale_fold0_best.pth.tar --cuda
 ```
+Please note that full inference may take 30+ hours, therefore the easiest way to speed up the script is to run it in several threads using `--start_from 0` parameter
 Then
 ```
 python attacker.py --root ./dual_net_new --save_root ./dual_net_new_op/ \
