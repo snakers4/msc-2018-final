@@ -1,13 +1,21 @@
+# What is this repo about?
+
+This is a top2 winning solution for this adversarial [competition](https://competitions.codalab.org/competitions/19090#participate)
+
 ![pipeline](pipeline.jpg)
 
-For more details about the solution please also be sure to see
+**For more details about the solution please also be sure to see**
 - Our MCS18 [presentation](https://drive.google.com/open?id=1P-4AdCqw81nOK79vU_m7IsCVzogdeSNq) 
 - Top-3 winners [presentation](https://drive.google.com/open?id=1aIUSVFBHYabBRdolBRR-1RKhTMg-v-3f)
 
-**More stuff from us**
-- [Telegram](https://t.me/snakers4) 
-- [Twitter](https://twitter.com/AlexanderVeysov)
-- [Blog](https://spark-in.me/tag/data-science)
+**Solution authors**:
+- https://github.com/atmyre
+- https://github.com/mortido
+- https://github.com/snakers4
+
+**Further reading**
+- [Blog post](https://spark-in.me/tag/XXX)
+- Most useful papers [1](https://arxiv.org/pdf/1710.06081.pdf), [2](https://arxiv.org/abs/1708.03999) 
 
 
 # 1. Build docker image
@@ -284,10 +292,3 @@ python3 train_attacker_function_loss.py \
 	--use_running_mean True \
 	--lr 1e-2 --m1 20 --m2 40 \
 ```
-
-
-
-# 7. Best applicable papers on the topic
-
-- https://arxiv.org/pdf/1710.06081.pdf
-- https://arxiv.org/abs/1708.03999
