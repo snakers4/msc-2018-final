@@ -4,9 +4,10 @@ This is a top2 winning solution for this adversarial [competition](https://compe
 
 ![pipeline](pipeline.jpg)
 
-**For more details about the solution please also be sure to see**
+**For more details about the competition and solution please also be sure to see**
 - Our MCS18 [presentation](https://drive.google.com/open?id=1P-4AdCqw81nOK79vU_m7IsCVzogdeSNq) 
-- Top-3 winners [presentation](https://drive.google.com/open?id=1aIUSVFBHYabBRdolBRR-1RKhTMg-v-3f)
+- Top-3 winners' [presentation](https://drive.google.com/open?id=1aIUSVFBHYabBRdolBRR-1RKhTMg-v-3f)
+- Compeition [page](https://competitions.codalab.org/competitions/19090#participate)
 
 **Solution authors**:
 - https://github.com/atmyre
