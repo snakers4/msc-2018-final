@@ -1,5 +1,15 @@
 ![pipeline](pipeline.jpg)
 
+For more details about the solution please also be sure to see
+- Our MCS18 [presentation](https://drive.google.com/open?id=1P-4AdCqw81nOK79vU_m7IsCVzogdeSNq) 
+- Top-3 winners [presentation](https://drive.google.com/open?id=1aIUSVFBHYabBRdolBRR-1RKhTMg-v-3f)
+
+**More stuff from us**
+- [Telegram](https://t.me/snakers4) 
+- [Twitter](https://twitter.com/AlexanderVeysov)
+- [Blog](https://spark-in.me/tag/data-science)
+
+
 # 1. Build docker image
 
 To build the docker image from the Dockerfile located in `dockerfile` please do:
@@ -41,25 +51,26 @@ To find out the container ID run
 # 2. Data structure and preparation
 
 Download this [version](mcs2018-competition.visionlabs.ru/distribs/test/MCS2018.cpython-35m-x86_64-linux-gnu.so) of the black box into the folder
+Backup [link](https://drive.google.com/open?id=1qXOfI-uZi2uw8ZlVZnQV_DzzVE-KmNbN) for the source file
 
 This is the version for
 - Ubuntu 16.04
 - Python 3.5
 - CUDA 9.0
+These versions are in the above Dockerfile
 
-Backup [link](https://drive.google.com/open?id=1qXOfI-uZi2uw8ZlVZnQV_DzzVE-KmNbN) for the source file
-
-It is assumed that data is stored in `/data`
-If the data is no more available on the [competition page](https://competitions.codalab.org/competitions/19090#participate), please use this [backup](https://drive.google.com/open?id=1IpA-otqgqSw-MnYmL1UGFbjFV7S4a2Lk).
+I archived a copy of the prepared datasets here - [backup](https://drive.google.com/open?id=1IpA-otqgqSw-MnYmL1UGFbjFV7S4a2Lk).
+Download each file separately to the /data folder and make sure that file names follow the below convention.
+Also you will have to unpack the zip files with images to the corresponding folders.
 
 The following files are required 
-- `data/pairs_list.csv`
+- `data/pairs_list.csv` - 1000 5+5 source-target combinations
 - `data/img_list_1M.csv` - list with 1M images
 - `data/img_descriptors_1M.npy` - numpy array with 1M descriptors
-- `data/student_model_imgs` - a folder with 1M images
-- `data/imgs` - a folder with original attack images
+- `data/student_model_imgs` - a folder with 1M images (you will have to unzip it)
+- `data/imgs` - a folder with original attack images (you will have to unzip it)
 
-The following pre-trained model files are to be located in the followind folders
+The following pre-trained model files are to be located in the followind folders (if you do not want to train them)
 - `student_net_learning/checkpoint/resnet34_scale_fold0_best.pth.tar`
 - `student_net_learning/checkpoint/ResNet50/best_model_chkpt.t7`
 - `student_net_learning/checkpoint/Xception/best_model_chkpt.t7`
@@ -73,6 +84,8 @@ To download the **pre-trained weights** you can use the following links:
 - [ResNet18](https://drive.google.com/open?id=1K5zBBxYRzFDqPQqGQ15Lo4vjrexwVtM1)
 - [ResNet50](https://drive.google.com/open?id=1dYp6mATDa8ObQVwu1HzHK6U6pzHn9sPz)
 - [Xception](https://drive.google.com/open?id=1cVwP765K3DzTRzaEBr_fMf9bqjtYIz7w)
+
+As an alternative means of downloading data you may visit [competition page](https://competitions.codalab.org/competitions/19090#participate).
 
 
 # 3. Run attack inference
@@ -119,7 +132,7 @@ Then run evaluation script
 python evaluate.py --attack_root ./FINAL_FINAL/ --target_dscr ./data/val_descriptors.npy --submit_name final_final --gpu_id 0
 ```
 
-# 4. Train snakers41's CNNs
+# 4. Train snakers41's CNNs (optional)
 
 ## Prepare the data
 First `cd av_cnns`
@@ -209,7 +222,7 @@ With the above setting on 2x1080Ti training takes:
 ![training_curves](av_cnns/training_curves.jpg)
 
 
-# 5. Train mortido's CNNs
+# 5. Train mortido's CNNs (optional)
 
 Provided original scripts log w/o alterations
 The require code from the [original repository](https://github.com/AlexanderParkin/MCS2018.Baseline)
@@ -240,3 +253,41 @@ python main.py --name ResNet50 --model_name ResNet50 --epochs 1 --down_epoch 4 -
 python main.py --name ResNet50 --model_name ResNet50 --epochs 1 --down_epoch 4 --cuda --batch_size 32 --datalist ../data/data_list/ --root C:/ --lr 0.000001 --ignore_prev_run --resume
 =========================
 ```
+
+# 6. Play with the final version of end-to-end model (optional)
+
+![pipeline](e2e_arch.jpg)
+![pipeline](flows.jpg)
+
+The thing is, in this task an end-to-end model did not really work on the black-box, but performed well on white-box.
+The same can be said for for CW attacks (see papers below on details).
+
+The idea here was the following:
+- Have 2 losses - L2 norm and SSIM
+- Train and end-to-end model - from 1+5 images to noise
+- Try siamese LinkNet as baseline architecture
+- Use a frozen instance of Student model for loss calculation
+
+If you would like to play with this idea
+- first `cd av_cnns`
+- then can launch training with this command:
+
+```
+python3 train_attacker_function_loss.py \
+	--lognumber resnet18_attacker_to_img_bb --tensorboard True --tensorboard_images True \
+	--workers 4 --print-freq 1 \
+	--epochs 100 --start-epoch 0 --fold_num 0 \
+	--batch-size 20 --val_size 0.25 \
+	--do_augs False --do_shuffle True \
+	--is_deconv True \
+	--noise_multiplier 0.1 \
+	--use_running_mean True \
+	--lr 1e-2 --m1 20 --m2 40 \
+```
+
+
+
+# 7. Best applicable papers on the topic
+
+- https://arxiv.org/pdf/1710.06081.pdf
+- https://arxiv.org/abs/1708.03999
