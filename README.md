@@ -13,6 +13,8 @@ This is a top2 winning solution for this adversarial [competition](https://compe
 - https://github.com/atmyre
 - https://github.com/mortido
 - https://github.com/snakers4
+- https://github.com/stalkermustang
+
 
 **Further reading**
 - [Blog post](https://spark-in.me/tag/XXX)
